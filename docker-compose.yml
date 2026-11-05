@@ -1,0 +1,73 @@
+name: parkpulse
+
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: parkpulse-mysql
+    restart: unless-stopped
+    command:
+      - --default-time-zone=+05:30
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --event-scheduler=ON
+      - --log-bin-trust-function-creators=1
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-parkpulse_dev}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-parkpulse}
+    ports:
+      - "${MYSQL_PORT:-3307}:3306"
+    volumes:
+      - parkpulse_mysql_data:/var/lib/mysql
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./db/seed.sql:/docker-entrypoint-initdb.d/02_seed.sql:ro
+      - ./db/logic.sql:/docker-entrypoint-initdb.d/03_logic.sql:ro
+      - ./db/security.sql:/docker-entrypoint-initdb.d/04_security.sql:ro
+      - ./db/tests:/tests:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: parkpulse-backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      BACKEND_PORT: 4000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: ${MYSQL_DATABASE:-parkpulse}
+      DB_USER: ${DB_USER:-parkpulse_app}
+      DB_PASSWORD: ${DB_PASSWORD:-parkpulse_app_dev}
+      JWT_SECRET: ${JWT_SECRET:-parkpulse_dev_jwt_secret_key_2026}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-24h}
+      MAIL_FROM: ${MAIL_FROM:-no-reply@parkpulse.dev}
+    volumes:
+      - ./db:/db:ro
+    ports:
+      - "${BACKEND_PORT:-4000}:4000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000}
+    container_name: parkpulse-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000}
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+
+volumes:
+  parkpulse_mysql_data:

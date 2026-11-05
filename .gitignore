@@ -1,0 +1,21 @@
+# secrets and local environment files (never commit .env)
+.env
+.env.local
+.env.*.local
+
+# dependencies and build output
+node_modules/
+.next/
+dist/
+build/
+out/
+.vercel/
+*.tsbuildinfo
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+npm-debug.log*

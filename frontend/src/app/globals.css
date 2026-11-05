@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import 'leaflet/dist/leaflet.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --editorial-bg: #F3ECE0;
+  --editorial-surface: #FAF6EE;
+  --editorial-ink: #161514;
+  --editorial-muted: #766F65;
+  --editorial-border: #DDD4C5;
+  --editorial-vermilion: #EE5335;
+  --editorial-cobalt: #2251E5;
+  --editorial-lime: #CEE938;
+}
+
+@layer base {
+  body {
+    background-color: #F3ECE0;
+    color: #161514;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+.editorial-ribbon {
+  display: inline-block;
+  background-color: #EE5335;
+  color: #161514;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  transform: rotate(-1.25deg);
+  padding: 0.25rem 0.9rem;
+}
+
+.editorial-kpi-num {
+  font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.editorial-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 9999px;
+  border-width: 2px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.75rem;
+  transform: rotate(-6deg);
+}

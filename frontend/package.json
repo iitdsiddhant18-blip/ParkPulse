@@ -1,0 +1,37 @@
+{
+  "name": "parkpulse-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "typecheck": "tsc --noEmit",
+    "test:3a": "tsx tests/verify_phase_3a.ts",
+    "test:3b": "tsx tests/verify_phase_3b.ts",
+    "test:4a": "tsx tests/verify_phase_4a.ts",
+    "test:4b": "tsx tests/verify_phase_4b.ts",
+    "test": "tsx tests/verify_phase_4b.ts"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.460.0",
+    "next": "14.2.21",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "recharts": "^2.15.0"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.14",
+    "@types/node": "^22.10.2",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "autoprefixer": "^10.4.20",
+    "dotenv": "^16.4.7",
+    "mysql2": "^3.12.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
